@@ -1,0 +1,166 @@
+---
+title: \textbf{"Who votes for Trump ?"}
+author: "Pramod Padmanabhan"
+date: "19th July, 2016"
+output: 
+ pdf_document:  
+ fig_caption: true
+ number_sections: true
+
+
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+## Introduction
+
+The year 2016 will be remembered down the ages for the 58th quadrennial Presidential election of the United States as it gets highlighted by the candidates running for the most powerful position on this planet. The Democrats being, most-likely, represented by Hillary Clinton and the Republicans by the exuberant billionaire, Donald Trump. Though these are the two main contenders in these elections, Senator Bernie Sanders will live in the minds of the younger generation, that witnessed these elections, for his feasible socialism and populist ideas.
+
+Despite Sanders wanting to rewrite the election process in the United States through his revamped funding campaigns by seeking donations from individuals and his fresh breath of what leadership should look like, he seems unlikely to achieve the endorsement of the Democratic party. Nevertheless history will still be made by the end of this year with the United States either electing its first ever Woman President or giving the job to a fascist leader in Donald Trump.
+
+In this project we will look at how on earth did Donald Trump get nominated by the Republicans by studying the kind of Americans who favored him. The characteristics we will look at include the race, the occupation, their income levels, the amount of education, their cosmopolitan outlook etc. 
+
+## Donald Trump's Voters
+
+In this section we will study the characteristics of Trump's supporters. The regression tree plots that follow have the percentage of votes from the Republican voters of each state on the nodes. These votes were taken from the results of the Republican primaries held in 46 states as of July 13th, 2016. The states not included are Colorado, District of Columbia (DC), Maine, Minnesota and North Dakota making the number of observations 46.
+
+The variables or the characteristics that we wish to study are the following : the racial composition of the state, the level of urbanization of the state, the type of economy of the state (that is if the state is predominantly a farming, mining, manufacturing state), the level of education of the voting poulation, the level of employment and the poverty levels of the various states, the mean household income in the state and finally the number of Ku Klux Klans that were operating in the state in the past ! 
+
+Several of these variables can have correlations with each other and most of them are completely independent. Taking this into account we make regression plots based on groups of variables that can possibly interact with each other. 
+
+### Ku Klux Klans
+
+With its long history of violence, the Klan is the most infamous and oldest of American hate groups. When the Klan was formed in 1865, it was single, unitary organization. Today, there are dozens of competing Klan groups. Although black Americans have typically been the Klan's primary target, it has also attacked Jews, immigrants, homosexuals, and Catholics.
+
+The data we used was from the 1920's and 30's and gave us information about the number of Klans in each state. They were separated county-wise which we aggregated state-wise. 
+
+The plot shows the number of Klans in each state and how it affected voters of the present. The average percentage of votes garnered by Mr. Trump in the primaries is 12 % of the Republican voters. Clearly we see from the tree plot that nearly 32 states, with a large concentration of Klans, account for above average votes for Trump.
+
+The data used was from the early part of the century and so is not as reliable. However it still gives us an indication of the impact of Klan population on voter sentiment. Hate groups are still existent in the United States with the KKK being just one example. For more info : https://www.splcenter.org/fighting-hate/intelligence-report/2016/active-hate-groups-united-states-2015.
+
+```{r Number of Klans, echo=FALSE, warning = FALSE, fig.cap = "Dependence on Number of KKKlans in the State", message =  FALSE, fig.height = 8}
+library(rpart)
+library(rpart.plot)
+library(dplyr)
+library(ggplot2)
+library(ggrepel)
+library(ggdendro)
+library(rattle)
+klans <- read.csv("data_klans.csv")
+full_data <- read.csv("full_data.csv")
+
+tree1 = rpart(absolute_votes ~ Klans, data = klans)
+fancyRpartPlot(tree1, sub ="Regression tree for Votes vs Klan Percentage, n denotes the number of states.", prefix = "Votes")
+
+```
+
+
+```{r Klans scatter plot, echo = FALSE, warning = FALSE, fig.width = 8, fig.height = 8}
+
+ggplot(klans, aes(Klans, absolute_votes, color = state)) + geom_point(aes(size = absolute_votes), shape = 19, alpha = 0.3, position=position_jitter(width=1,height=.5)) + geom_text_repel(aes(label = state), size = 2) + theme(panel.background = element_rect(fill = 'grey95'), legend.position = "none", plot.title = element_text(size=15, face="bold", margin = margin(15, 0, 10, 0))) + labs(x = "Percentage of Klans", y = "Percentage of Votes", title = "Impact of Klans") + geom_vline(xintercept = c(224, 2018), color = c("Blue", "Green"), size = 0.5, alpha = 0.3, linetype = 2) + geom_hline(yintercept = c(7.8, 14), color = c("Red", "Purple"), size = 0.5, alpha = 0.3, linetype = 2)
+
+```
+
+### Impact of Education, Poverty and Low Employment on the Votes
+
+Ignorance due to low education and frustration of losing out jobs to skilled immigrants and the poverty that follows can be crucial factors for the empowered voter who can make a difference by electing a favorable representative. Thus we expect these three interdependent factors to have a significant impact on Trump's candidacy as can be seen in the tree plot below. 
+
+Low employment below 12 % accounts for 18 states with an average of 12 % of the votes in favor of Trump. Coupling this with low education, another 7.6 % gets added to the number of votes along with 7 states. Surprisingly a high education rate of more than 4.5 % of the voting population holding a high school degree or higher still are in favor of Trump making a sizeable chunk of 11 % of the Republican votes from 14 states.
+
+```{r Education/Employment/Poverty, echo = FALSE, fig.height = 8}
+EEP <- read.csv("data_EEP.csv")
+tree2 = rpart(Votes ~ Education + Employment + Poverty, data = EEP)
+fancyRpartPlot(tree2, sub ="Regression tree for Votes vs Employment/Education/Poverty.", prefix = "Votes")
+
+```
+
+
+```{r EEP contd, echo = FALSE, warning = FALSE, fig.height = 7}
+states = read.csv("states.csv")
+EEP1 <- bind_cols(EEP, states)
+ggplot(EEP1, aes(Education, Votes, color = full_data_15.state)) + geom_point(aes(size = Votes), shape = 19, alpha = 0.3, position=position_jitter(width=1,height=.5)) + geom_text_repel(aes(label = full_data_15.state), size = 2) + theme(panel.background = element_rect(fill = 'grey95'), legend.position = "none", plot.title = element_text(size=15, face="bold", margin = margin(15, 0, 10, 0))) + labs(x = "Percentge of High School Graduates and Higher Degrees", y = "Percentage of Votes", title = "Impact of Education, Employment") + geom_vline(xintercept = 4.5, color = "Blue", size = 0.5, alpha = 0.3, linetype = 2) + geom_hline(yintercept = 11, color = "Red", size = 0.5, alpha = 0.3, linetype = 2)
+
+```
+
+### Dependence on the Type of Economy
+
+The less industrialized states tend to vote for Trump as they make up 83 % of the favorable vote. States with very little farming support the candidacy more but overall this is not a significant factor as farming as an occupation is much less compared to other vocations. 
+
+```{r Economy, echo = FALSE, fig.height = 8}
+economy <- read.csv("data_economy.csv")
+tree3 = rpart(Votes ~ Farming + Mining + Manufacturing + Government + Recreation + Nonspecialized, data = economy)
+fancyRpartPlot(tree3, sub ="Regression tree for Votes vs Type of Economy.", prefix = "Votes")
+
+```
+
+### Urbanized Voters
+
+A measure of urbanization of a state is obtained by counting the number of metros in a given state. We find that 63 % of the voters belong to states with less than 51 % metros showing that a major chunk of the rural Republican population prefer Trump. This is clearly seen on the line left of 51 % on the scatter plot below.
+
+```{r Urbanization, echo = FALSE, fig.height = 6}
+urbanization <- read.csv("data_urbanization.csv")
+tree4 = rpart(Votes ~ Urbanization, data = urbanization)
+fancyRpartPlot(tree4, sub ="Regression tree for Votes vs Urbanization Percentage.", prefix = "Votes")
+```
+
+
+
+```{r Urbanization contd, echo = FALSE, warning = FALSE, fig.width = 8, fig.height = 8}
+urbanization1 <- bind_cols(urbanization, states)
+ggplot(urbanization1, aes(Urbanization, Votes, color = full_data_15.state )) + geom_point(aes(size = Votes), shape = 19, alpha = 0.3, position=position_jitter(width=1,height=.5)) + geom_text_repel(aes(label = full_data_15.state), size = 2) + theme(panel.background = element_rect(fill = 'grey95'), legend.position = "none", plot.title = element_text(size = 15, face="bold", margin = margin(15, 0, 10, 0))) + labs(x = "Percentge of Metros", y = "Percentage of Votes", title = "Impact of Urbanization") + geom_vline(xintercept = 51, color = "Blue", size = 0.5, alpha = 0.3, linetype = 2)
+```
+
+### Preferences of different Racial Groups
+
+With Trump's scathing remarks on the minorities it is imperative to check the inclination of the different races. As expected the Blacks and Hispanics tend to skew the voting percentages for Mr. Trump. States with less than 6.5 % Hispanic population voted overwhelmingly in favor of Trump as can be seen in the tree plot below. States with high Hispanic population and low Black poulation voted in low numbers for Trump. This is further confirmed by the scatter plots showing the voting trend of the Hispanics. 
+
+```{r Race, echo = FALSE, fig.height = 8}
+race <- read.csv("data_race.csv")
+race1 <- bind_cols(race, states)
+tree5 = rpart(Votes ~ White + Black + Native + Asian + Islander + Mixed + Hispanic, data = race)
+fancyRpartPlot(tree5, sub ="Regression tree for Votes vs Race.", prefix = "Votes")
+```
+
+
+
+
+```{r Race contd, echo = FALSE, warning = FALSE, fig.height = 8}
+
+ggplot(race1, aes(Hispanic, Votes, color = full_data_15.state)) + geom_point(aes(size = Votes), shape = 19, alpha = 0.3, position=position_jitter(width=1,height=.5)) + geom_text_repel(aes(label = full_data_15.state), size = 2) + theme(panel.background = element_rect(fill = 'grey95'), legend.position = "none", plot.title = element_text(size  = 15, face="bold", margin = margin(15, 0, 10, 0))) + labs(x = "Percentge of Hispanics", y = "Percentage of Votes", title = "Impact of Hispanic Population Percentage")
+
+```
+
+### Income Dependence
+
+The lower income groups with mean household income of less than 18,000 $ per annum clearly do not favor Trump when compared to the higher income groups. The upper middle class and the rich with an annual mean household income of more than 26,000 $ are clearly in favor of the capitalist Trump. 
+
+```{r Income, echo = FALSE}
+income = read.csv("income.csv")
+colnames(income)[1] <- "Income"
+full_data1 <- bind_cols(full_data, income)
+tree6 = rpart(absolute_votes~ Income, data = full_data1)
+fancyRpartPlot(tree6, sub ="Regression tree for Votes vs Mean Household Income.", prefix = "Votes")
+
+```
+
+
+## Inferences
+
+Having analysed these factors affecting the voting pattern for Trump, let us put together our inferences based on this non-exhaustive list of factors.
+
+Our data is based on the primaries held in 46 states and so the voting percentage comprises of only Republican voters from each state. As can be seen from the root of each of the tree plots, an average of 12 % of the Republican voters from each state opted for Trump. Using this as a baseline let us summarize how each factor has built this average. States with a siginficant Hispanic and Black population have voted much below the average making Trump's supporters predominantly White. This is consistent with the fact that these are the three biggest racial groups in the US and Trump's rhetorics against non-White population.
+
+Mean household income data show that the upper middle class and the rich Republicans are the ones who endorse Trump while the lower income groups have voted in much lower numbers. Regions where more than half the state is urbanized have also gone in favor of Trump when compared to more rural states that have been clearly repelled by Trump's agenda. 
+
+States with a heavy presence of manufacturing have preferred Trump, with the non-industrialized states voting in much lower numbers for a production friendly Trump. This is especially seen with states having farming and mining as its economic backbone.
+
+Unemployment seems to be a huge factor in deciding votes for Trump, in line with his anti-immigrant agenda. States with a high percentage of unemployment seem to favor Trump. As expected states with low education percentage, that is those states where 20 % or more of the voting population do not have a high school diploma or equivalent, have supported Trump. 
+
+Finally we saw the impact of hate groups such as the Ku Klux Klan in deciding the votes. Though this data is from the past presence of the KKK in the various states, it still seemed to have an effect on the voters with states which had a large presence of the KKK voting above the average number of votes obtained by Mr. Trump from all the states.
+
+Thus far the inferences obtained seems to be in line with the ideologies of Donald Trump. It would also be interesting to study the effect of the religion of the voters in their choice of Trump given his anti-semitic and anti-Muslim speeches. We were unable to do this due to lack of sufficient data.
+
+## Acknowledgements
+
+I thank my mentor Srdjan Santic for helping me out throughout the workshop and the Springboard team for their resources and guidance.
