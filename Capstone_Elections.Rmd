@@ -147,7 +147,7 @@ fancyRpartPlot(tree2, sub ="Regression tree for Votes vs Employment/Education/Po
 ```{r EEP contd, echo = FALSE, warning = FALSE, fig.height = 7}
 states = read.csv("states.csv")
 EEP1 <- bind_cols(EEP, states)
-ggplot(EEP1, aes(Education, Votes, color = full_data_15.state)) + geom_point(aes(size = Votes), shape = 19, alpha = 0.3, position=position_jitter(width=1,height=.5)) + geom_text_repel(aes(label = full_data_15.state), size = 2) + theme(panel.background = element_rect(fill = 'grey95'), legend.position = "none", plot.title = element_text(size=15, face="bold", margin = margin(15, 0, 10, 0))) + labs(x = "Percentage of counties with Low Education Rate", y = "Percentage of Votes", title = "Impact of Education, Employment") + geom_vline(xintercept = 4.5, color = "Blue", size = 0.5, alpha = 0.3, linetype = 2) + geom_hline(yintercept = 11, color = "Red", size = 0.5, alpha = 0.3, linetype = 2)
+ggplot(EEP1, aes(Education, Votes, color = full_data_15.state)) + geom_point(aes(size = Votes), shape = 19, alpha = 0.3, position=position_jitter(width=1,height=.5)) + geom_text_repel(aes(label = full_data_15.state), size = 2) + theme(panel.background = element_rect(fill = 'grey95'), legend.position = "none", plot.title = element_text(size=15, face="bold", margin = margin(15, 0, 10, 0))) + labs(x = "Percentage of counties with Low Education Rate", y = "Percentage of Votes", title = "Impact of Education") + geom_vline(xintercept = 4.5, color = "Blue", size = 0.5, alpha = 0.3, linetype = 2) + geom_hline(yintercept = 11, color = "Red", size = 0.5, alpha = 0.3, linetype = 2)
 
 ```
 
