@@ -1,0 +1,299 @@
+\documentclass{beamer}
+\mode<presentation> {\usetheme{Berkeley}}
+\setbeamertemplate{navigation symbols}{}
+
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\setbeamertemplate{caption}{\insertcaption}
+\usepackage[font=small,skip=0pt,labelformat=empty]{caption}
+\usepackage{subcaption}
+%\usepackage{subfigure}
+
+
+\title[US - Elections]{Decoding Trump's Voters}
+
+\author[Pramod Padmanabhan]{Pramod Padmanabhan}
+
+\date{23rd July, 2016}
+
+\begin{document}
+
+% Frame 1
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+%-----------------------------------------------------------
+%% Frame 2
+
+\section{Plan of the Talk}
+
+\begin{frame}{Plan of the Talk}
+
+
+\begin{enumerate}[label=\protect\circled{\arabic*}]
+
+\item \visible<1->{Introduction}
+\item \visible<2->{The Predictors and the Predicted }
+\item \visible<3->{Decision Trees}
+\item \visible<4->{Inferences} 
+\item \visible<5->{Outlook}
+
+
+\end{enumerate}
+\end{frame}
+
+%----------------------------------------------------------
+%% Frame 3
+
+\section[Introduction]{Introduction}
+
+\begin{frame}{US Elections 2016}
+
+\begin{itemize}
+
+\item \visible<1->{$\bullet$ The Presidential elections in the United States is a quadrennial event that is keenly observed by the rest of the world.}
+
+\item \visible<2->{$\bullet$ The year 2016 gets marked by the nature of the candidates, Hillary Clinton, with the chance of becoming the first ever Woman President and the billionaire Donald Trump, for his extreme views.}
+
+\item \visible<3->{$\bullet$ The Democrat, Bernie Sanders was a practical socialist who unfortunately did not get enough support needed for the nomination.} 
+
+\end{itemize}
+
+\end{frame}
+
+%% Frame 4
+
+\subsection[The Problem]{Trump's Voters}
+
+\begin{frame}{The Problem - Trump's Voters}
+
+\begin{itemize}
+
+\item \visible <1-> {$\bullet$ The world was taken by surprise when Donald Trump was nominated by the Republicans to contest in the general elections.
+}
+
+\item \visible <2-> {$\bullet$ We want to find out who are the people who voted for Trump giving him the ticket. Our goal is to describe these people.}
+
+\item \visible <3-> {$\bullet$ We do this by looking at which racial group they belong to, their level of education, employment and poverty level, their profession, their income, if they belong to hate groups and if they come from urban or rural areas. }
+
+\end{itemize}
+
+\end{frame}
+
+%--------------------------------------------------------------------------------------
+%% Frame 5
+
+\section[Data and Variables]{DV}
+
+\begin{frame}{The Predictors and the Predicted}
+
+\begin{itemize}
+
+\item \visible<1-> {$\bullet$ The dependent variable is the number of votes gained by Trump at the Republican primaries held in the various states. We have the results from 46 such states, excluding Colorado, DC, Maine, Minnesota and North Dakota. }
+
+\item \visible <2->{$\bullet$ The variables that the number of votes depend on, include the following :}
+
+\item \visible<3-> {Percentages of various racial groups in the state.}
+\item \visible<4-> {Economic indicators for the state described by the dominant revenue generator for the state.}
+\item \visible<5-> {The amount of education, unemployment and poverty in a state.}
+
+\end{itemize}
+
+\end{frame}
+
+%% Frame 6
+
+\begin{frame}{The Predictors contd ... }
+
+\begin{itemize}
+
+\item \visible<1-> {The mean household income of each state.}
+\item \visible<2-> {Urbanization described by the number of metros and non-metro regions in each state.}
+\item \visible<3-> {Hate group indicator shown by the number of extremist organizations like the KKK in each state.}
+
+\item \visible<4-> {$\bullet$ We use a total of 18 variables which are normalized to account for the different sizes of the states.}
+
+\item \visible<5-> {$\bullet$ Variables which we could have a significant effect but not used here include religious composition of each state, number of veterans in the state, immigrant make up of each state.}
+
+\end{itemize}
+\end{frame}
+
+%----------------------------------------------------------------------
+%% Frame 7
+
+\section[ Visualizing the Dependencies]{Reg-Trees}
+
+\begin{frame}{Decision Trees}
+$\bullet$ Klan Dependence
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[scale=0.4]{klan_tree.pdf}
+		\end{center}
+\end{figure}
+
+\end{frame}
+
+%% Frame 8
+
+\begin{frame}{Decision Trees contd...}
+$\bullet$ Education/Employment/Poverty
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[scale=0.35]{EEP_tree.pdf}
+		\end{center}
+\end{figure}
+
+\end{frame}
+
+%% Frame 9
+
+\begin{frame}{Decision Trees contd...}
+$\bullet$ Economic Dependence
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[scale=0.4]{Economy_tree.pdf}
+		\end{center}
+\end{figure}
+
+\end{frame}
+
+%% Frame 10
+
+\begin{frame}{Decision Trees contd....}
+$\bullet$ Dependence of level of Urbanization of a state.
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[scale=0.4]{urban_tree.pdf}
+		\end{center}
+\end{figure}
+
+\end{frame}
+
+%% Frame 11
+
+\begin{frame}{Decision Trees contd....}
+$\bullet$ Race Dependence.
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[scale=0.4]{race_tree.pdf}
+		\end{center}
+\end{figure}
+
+\end{frame}
+
+%% Frame 12
+
+\begin{frame}{Decision Trees contd....}
+$\bullet$ Dependence on Mean Household Income of each state.
+
+\begin{figure}[h!]
+	\begin{center}
+		\includegraphics[scale=0.6]{income_tree.pdf}
+		\end{center}
+\end{figure}
+
+\end{frame}
+
+%------------------------------------------------------------
+%% Frame 13
+
+\section[Inferences]{Inferences}
+\begin{frame}{Inferences}
+
+\begin{itemize}
+\item \visible<1-> {$\bullet$ Trump's national average is 12 \% of the Republican votes.}
+\item \visible<2-> {$\bullet$ States with a significant Black and Hispanic population have voted below Trump's national average while he is way above average for the predominantly White states.}
+\item \visible<3-> {$\bullet$ The upper middle class and the rich Republicans are the ones who endorse Trump more than the Republicans in the lower income groups.}
+\item \visible<4-> {$\bullet$ States with more than half the counties urbanized support Trump more than the rural regions.}
+\end{itemize}
+
+\end{frame}
+
+%% Frame 14
+\begin{frame}{Inferences contd....}
+
+\begin{itemize}
+\item \visible<1-> {$\bullet$ Manufacturing and mining states have gone in favor of Trump compared to farming states and those which rely on State and Federal government jobs.} 
+\item \visible<2-> {$\bullet$ States with a high percentage of unemployment support Trump more and the same goes for states with a low amount of education.}
+\item \visible<3-> {$\bullet$ Regions with a high presence of the KKK klans have voted with a percentage above Trump's national average. The surprising thing is this inference was made from Klan concentration data from the early part of the 20th century, when the Klans were most active, and they still seem to have an effect on present day voters.}
+\end{itemize}
+
+\end{frame}
+
+%------------------------------------------------------------
+%% Frame 15
+
+\section[Outlook]{Outlook}
+
+\begin{frame}{Outook}
+
+\begin{itemize}
+
+\item \visible<1-> {$\bullet$ This analysis can be performed for Hillary Clinton as well. This would give us a way to make a comparison between the two candidates which gives a way to predict the outcome of the elections.}
+
+
+\end{itemize}
+
+\end{frame}
+
+%--------------------------------------------------------------
+%% Frame 16 
+
+\begin{frame}{}
+
+\begin{center}
+
+{\bf Thank you !}
+
+\end{center}
+
+\end{frame}
+
+
+
+
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
