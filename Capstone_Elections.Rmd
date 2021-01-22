@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 The year 2016 will be remembered down the ages for the 58th quadrennial Presidential election of the United States as it gets highlighted by the candidates running for the most powerful position on this planet. The Democrats being, most-likely, represented by Hillary Clinton and the Republicans by the exuberant billionaire, Donald Trump. Though these are the two main contenders in these elections, Senator Bernie Sanders will live in the minds of the younger generation, that witnessed these elections, for his feasible socialism and populist ideas.
 
-Despite Sanders wanting to rewrite the election process in the United States through his revamped funding campaigns by seeking donations from individuals and his fresh breath of what leadership should look like, he seems unlikely to achieve the endorsement of the Democratic party. Nevertheless history will still be made by the end of this year with the United States either electing its first ever Woman President or giving the job to a fascist leader in Donald Trump.
+Despite Sanders wanting to rewrite the election process in the United States through his revamped funding campaigns by seeking donations from individuals and his fresh breath of what leadership should look like, he seems unlikely to achieve the endorsement of the Democratic party. Nevertheless history will still be made by the end of this year with the United States either electing its first ever Woman President or giving the job to a seemingly authoritative leader in Donald Trump.
 
 In this project we will look at how on earth did Donald Trump get nominated by the Republicans by studying the kind of Americans who favored him. The characteristics we will look at include the race, the occupation, their income levels, the amount of education, their cosmopolitan outlook etc. 
 
@@ -214,7 +214,7 @@ States with less than 6.5 % Hispanic population voted overwhelmingly in favor of
 
 The remaining 28 states are those where the Hispanic population and Black poulation determine Trump's fate. The national means for Hispanics is `r round(mean(race$Hispanic))` % and for Blacks is `r round(mean(race$Black))` %. States with a low Black population of less than 4 % have voted in very low numbers for Trump with an average of 5.7 %. States with both a high Black and hispanic population have voted with just about the average votes for Trump of 12 %. 
 
-In general states with higher Black and Hispanic population haveThis is fu voted less favorably for Trump. This is further confirmed by the scatter plot showing the voting trend of the Hispanics. 
+In general states with higher Black and Hispanic population have voted less favorably for Trump. This is further confirmed by the scatter plot showing the voting trend of the Hispanics. 
 
 
 
